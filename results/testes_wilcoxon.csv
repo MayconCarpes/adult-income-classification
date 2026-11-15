@@ -1,0 +1,7 @@
+metrica,comparacao,dif_media,folds_RF_melhor,p_wilcoxon
+f1,RF vs KNN,0.01706620780713296,10,0.001953125
+f1,RF vs Árvore de Decisão,0.008130487528394703,8,0.064453125
+f1,RF vs Naive Bayes (Gaussiano),0.058664845024688564,10,0.001953125
+accuracy,RF vs KNN,0.018036482885837247,10,0.001953125
+accuracy,RF vs Árvore de Decisão,0.007501537200245945,10,0.001953125
+accuracy,RF vs Naive Bayes (Gaussiano),0.11721664275466284,10,0.001953125

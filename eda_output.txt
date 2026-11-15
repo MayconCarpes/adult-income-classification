@@ -1,0 +1,154 @@
+Shape: (48842, 16) | por origem: {'train': 32561, 'test': 16281}
+
+== Tipos ==
+ age               int64
+workclass           str
+fnlwgt            int64
+education           str
+education-num     int64
+marital-status      str
+occupation          str
+relationship        str
+race                str
+sex                 str
+capital-gain      int64
+capital-loss      int64
+hours-per-week    int64
+native-country      str
+income              str
+origem              str
+dtype: object
+
+== Distribuição do alvo (bruto) ==
+income
+<=50K    37155
+>50K     11687
+Name: count, dtype: int64 
+ income
+<=50K    0.7607
+>50K     0.2393
+Name: proportion, dtype: float64
+
+== Faltantes ('?') por coluna ==
+workclass         2799
+occupation        2809
+native-country     857
+dtype: int64 
+Linhas com algum '?': 3620 (7.41%)
+NaN reais: 0
+
+== Faltantes por classe ==
+income   <=50K   >50K
+row_0                
+False   0.9155  0.959
+True    0.0845  0.041
+
+== Estatísticas numéricas ==
+                   count       mean        std  ...       50%       75%        max
+age             48842.0      38.64      13.71  ...      37.0      48.0       90.0
+fnlwgt          48842.0  189664.13  105604.03  ...  178144.5  237642.0  1490400.0
+education-num   48842.0      10.08       2.57  ...      10.0      12.0       16.0
+capital-gain    48842.0    1079.07    7452.02  ...       0.0       0.0    99999.0
+capital-loss    48842.0      87.50     403.00  ...       0.0       0.0     4356.0
+hours-per-week  48842.0      40.42      12.39  ...      40.0      45.0       99.0
+
+[6 rows x 8 columns]
+
+Assimetria (skew):
+ age                0.56
+fnlwgt             1.44
+education-num     -0.32
+capital-gain      11.89
+capital-loss       4.57
+hours-per-week     0.24
+dtype: float64
+
+capital-gain == 0: 0.9174 | capital-loss == 0: 0.9533
+capital-gain == 99999: 244
+hours-per-week == 99: 137 | age max: 90
+
+== Valores únicos (categóricos) ==
+workclass: 9 -> ['?', 'Federal-gov', 'Local-gov', 'Never-worked', 'Private', 'Self-emp-inc', 'Self-emp-not-inc', 'State-gov', 'Without-pay']
+education: 16 -> ['10th', '11th', '12th', '1st-4th', '5th-6th', '7th-8th', '9th', 'Assoc-acdm', 'Assoc-voc', 'Bachelors', 'Doctorate', 'HS-grad', 'Masters', 'Preschool', 'Prof-school', 'Some-college']
+marital-status: 7 -> ['Divorced', 'Married-AF-spouse', 'Married-civ-spouse', 'Married-spouse-absent', 'Never-married', 'Separated', 'Widowed']
+occupation: 15 -> ['?', 'Adm-clerical', 'Armed-Forces', 'Craft-repair', 'Exec-managerial', 'Farming-fishing', 'Handlers-cleaners', 'Machine-op-inspct', 'Other-service', 'Priv-house-serv', 'Prof-specialty', 'Protective-serv', 'Sales', 'Tech-support', 'Transport-moving']
+relationship: 6 -> ['Husband', 'Not-in-family', 'Other-relative', 'Own-child', 'Unmarried', 'Wife']
+race: 5 -> ['Amer-Indian-Eskimo', 'Asian-Pac-Islander', 'Black', 'Other', 'White']
+sex: 2 -> ['Female', 'Male']
+native-country: 42 -> ['?', 'Cambodia', 'Canada', 'China', 'Columbia', 'Cuba', 'Dominican-Republic', 'Ecuador', 'El-Salvador', 'England', 'France', 'Germany', 'Greece', 'Guatemala', 'Haiti', 'Holand-Netherlands', 'Honduras', 'Hong', 'Hungary', 'India', 'Iran', 'Ireland', 'Italy', 'Jamaica', 'Japan', 'Laos', 'Mexico', 'Nicaragua', 'Outlying-US(Guam-USVI-etc)', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Puerto-Rico', 'Scotland', 'South', 'Taiwan', 'Thailand', 'Trinadad&Tobago', 'United-States', 'Vietnam', 'Yugoslavia']
+income: 2 -> ['<=50K', '>50K']
+
+== Redundância education x education-num ==
+education mapeia 1:1 com education-num: True | nº níveis: 16 16
+
+== Relationship x sex x marital (inconsistências?) ==
+sex             Female   Male
+relationship                 
+Husband              1  19715
+Not-in-family     5870   6713
+Other-relative     689    817
+Own-child         3376   4205
+Unmarried         3928   1197
+Wife              2328      3
+
+== Duplicatas ==
+linhas duplicadas (atributos+classe): 52
+grupos idênticos com rótulos conflitantes: 5
+
+== Correlação (numéricos) ==
+                  age  fnlwgt  ...  capital-loss  hours-per-week
+age             1.00   -0.08  ...          0.06            0.07
+fnlwgt         -0.08    1.00  ...         -0.00           -0.01
+education-num   0.03   -0.04  ...          0.08            0.14
+capital-gain    0.08   -0.00  ...         -0.03            0.08
+capital-loss    0.06   -0.00  ...          1.00            0.05
+hours-per-week  0.07   -0.01  ...          0.05            1.00
+
+[6 rows x 6 columns]
+
+== Taxa de >50K por variável (top) ==
+sex
+Female    0.109
+Male      0.304 
+
+relationship
+Own-child         0.015
+Other-relative    0.035
+Unmarried         0.060
+Not-in-family     0.101
+Husband           0.449
+Wife              0.469 
+
+marital-status
+Never-married            0.045
+Separated                0.065
+Widowed                  0.084
+Married-spouse-absent    0.092
+Divorced                 0.101
+Married-AF-spouse        0.378
+Married-civ-spouse       0.446 
+
+education
+Preschool       0.012
+1st-4th         0.032
+11th            0.051
+5th-6th         0.053
+9th             0.054
+10th            0.063
+7th-8th         0.065
+12th            0.073
+HS-grad         0.159
+Some-college    0.190
+Assoc-voc       0.253
+Assoc-acdm      0.258
+Bachelors       0.413
+Masters         0.549
+Doctorate       0.726
+Prof-school     0.740 
+
+
+== Proporção >50K: train vs test ==
+income   <=50K    >50K
+origem                
+test    0.7638  0.2362
+train   0.7592  0.2408

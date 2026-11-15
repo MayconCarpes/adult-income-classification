@@ -1,0 +1,14 @@
+Dados: (48790, 14) | prop. >50K: 0.2394
+KNN                      k=5                            acc=0.8339 prec=0.6687 rec=0.6069 F1=0.6362 AUC=0.8597 (16s)
+KNN                      k=15                           acc=0.8447 prec=0.6955 rec=0.6250 F1=0.6583 AUC=0.8935 (13s)
+KNN                      k=31                           acc=0.8485 prec=0.7057 rec=0.6303 F1=0.6658 AUC=0.9003 (14s)
+Árvore de Decisão        gini, depth=5                  acc=0.8519 prec=0.7783 rec=0.5340 F1=0.6333 AUC=0.8821 (2s)
+Árvore de Decisão        gini, depth=10                 acc=0.8607 prec=0.7770 rec=0.5867 F1=0.6685 AUC=0.9028 (2s)
+Árvore de Decisão        entropy, depth=None, leaf>=20  acc=0.8590 prec=0.7537 rec=0.6109 F1=0.6747 AUC=0.9025 (3s)
+Random Forest            100 árv., depth=10             acc=0.8601 prec=0.8029 rec=0.5512 F1=0.6536 AUC=0.9128 (12s)
+Random Forest            100 árv., depth=None, leaf>=5  acc=0.8651 prec=0.7823 rec=0.6049 F1=0.6822 AUC=0.9192 (15s)
+Random Forest            200 árv., depth=20, leaf>=2    acc=0.8665 prec=0.7922 rec=0.6002 F1=0.6829 AUC=0.9201 (30s)
+Naive Bayes (Gaussiano)  var_smoothing=1e-9             acc=0.7303 prec=0.4665 rec=0.8590 F1=0.6043 AUC=0.8500 (2s)
+Naive Bayes (Gaussiano)  var_smoothing=1e-5             acc=0.7355 prec=0.4712 rec=0.8567 F1=0.6080 AUC=0.8501 (2s)
+Naive Bayes (Gaussiano)  var_smoothing=1e-1             acc=0.7493 prec=0.4869 rec=0.8695 F1=0.6242 AUC=0.8810 (2s)
+OK
