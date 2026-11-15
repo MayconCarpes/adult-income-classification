@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apresentação: Adult Income Classification</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-hover: #0ea5e9;
+      --accent: #10b981;
+      --accent-warm: #f59e0b;
+      --danger: #ef4444;
+      --border: #334155;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      user-select: none;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 28px;
+      background: rgba(15, 23, 42, 0.9);
+      border-bottom: 1px solid var(--border);
+      z-index: 10;
+    }
+    .brand {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .btn {
+      background: var(--card-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 7px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .btn:hover {
+      background: var(--border);
+      border-color: var(--primary);
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #0f172a;
+      font-weight: 600;
+      border: none;
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+    .slide-counter {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      min-width: 60px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+    main {
+      flex: 1;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 40px;
+      overflow: hidden;
+    }
+    .slide {
+      position: absolute;
+      top: 24px;
+      bottom: 24px;
+      left: 40px;
+      right: 40px;
+      opacity: 0;
+      transform: scale(0.98);
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 36px 48px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      overflow-y: auto;
+    }
+    .slide.active {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: all;
+    }
+    .slide-header {
+      margin-bottom: 24px;
+    }
+    .slide-tag {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .slide-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+    .slide-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: center;
+      height: 100%;
+    }
+    .card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .card h3 {
+      font-size: 1.15rem;
+      color: var(--primary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    .card li {
+      margin-bottom: 10px;
+      line-height: 1.5;
+      color: #cbd5e1;
+      position: relative;
+      padding-left: 20px;
+    }
+    .card li::before {
+      content: "•";
+      color: var(--primary);
+      font-size: 1.4rem;
+      position: absolute;
+      left: 0;
+      top: -3px;
+    }
+    .highlight {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .img-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      height: 100%;
+      max-height: 480px;
+    }
+    .img-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 6px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+    th, td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--primary);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+    }
+    tr:hover td {
+      background: rgba(56, 189, 248, 0.05);
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .badge-success { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; }
+    .badge-warning { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; }
+    .badge-info { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8; }
+
+    /* Presenter notes drawer */
+    #notes-drawer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #020617;
+      border-top: 2px solid var(--primary);
+      padding: 16px 36px;
+      max-height: 180px;
+      overflow-y: auto;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+      z-index: 100;
+      box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.7);
+    }
+    #notes-drawer.open {
+      transform: translateY(0);
+    }
+    .notes-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: var(--accent-warm);
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .notes-text {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+    .progress-bar {
+      height: 4px;
+      background: var(--border);
+      width: 100%;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .hero-center {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      height: 100%;
+      gap: 20px;
+    }
+    .hero-title {
+      font-size: 3.2rem;
+      font-weight: 900;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: 1.4rem;
+      color: var(--text-muted);
+      max-width: 800px;
+    }
+    .hero-meta {
+      display: flex;
+      gap: 20px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span>📊 Adult Income Classification</span>
+    </div>
+    <div class="controls">
+      <button class="btn" id="prevBtn" onclick="prevSlide()">◀ Anterior (←)</button>
+      <span class="slide-counter" id="slideCounter">1 / 8</span>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextSlide()">Próximo (→) ▶</button>
+      <button class="btn" onclick="toggleNotes()">🎙️ Notas [N]</button>
+      <button class="btn" onclick="toggleFullscreen()">⛶ Tela Cheia</button>
+    </div>
+  </header>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <main>
+    <!-- Slide 1: Capa -->
+    <div class="slide active" data-notes="Apresente-se com segurança. Fale que o foco é rigor metodológico: ausência total de vazamento de dados, estudo de ablação e validação estatística por teste de Wilcoxon.">
+      <div class="hero-center">
+        <span class="slide-tag">Machine Learning Benchmark & Rigor Metodológico</span>
+        <h1 class="hero-title">Adult Income Classification</h1>
+        <p class="hero-sub">Estudo comparativo de modelos preditivos e técnicas de balanceamento sobre o Censo UCI com validação estatística formal</p>
+        <div class="hero-meta">
+          <span class="badge badge-info">10-Fold Stratified CV</span>
+          <span class="badge badge-success">No Data Leakage</span>
+          <span class="badge badge-warning">Teste de Wilcoxon (α=0.05)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: EDA -->
+    <div class="slide" data-notes="Destaque: 48.842 instâncias unificadas para a validação cruzada 10-fold. 76% <=50K e 24% >50K (desbalanceado). Valores ausentes em 7,4% das linhas, identificados por '?'. Forte assimetria em ganhos de capital (>91% de zeros).">
+      <div class="slide-header">
+        <div class="slide-tag">Etapa 1: Diagnóstico dos Dados</div>
+        <h2 class="slide-title">Análise Exploratória & Desafios</h2>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>📌 Características Críticas</h3>
+          <ul>
+            <li><strong>Volume total:</strong> 48.842 registros (unificação determinística de treino e teste).</li>
+            <li><strong>Desbalanceamento natural:</strong> 76,1% da classe &lt;=50K vs 23,9% da classe &gt;50K.</li>
+            <li><strong>Valores ausentes disfarçados:</strong> Marcados com <code class="highlight">?</code> em <em>workclass</em> (2.799), <em>occupation</em> (2.809) e <em>native-country</em> (857).</li>
+            <li><strong>Assimetria severa:</strong> <code class="highlight">capital-gain</code> possui 91,7% de zeros (skew = 11.89) e pico artificial em 99.999.</li>
+            <li><strong>Redundância estrita:</strong> <em>education</em> mapeia exatamente 1:1 com <em>education-num</em>.</li>
+          </ul>
+        </div>
+        <div class="img-box">
+          <img src="figures/fig1_eda.png" alt="Figura 1: EDA">
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Metodologia e Pipeline -->
+    <div class="slide" data-notes="Explique como evitou o vazamento de dados: todas as transformações de StandardScaler, OneHotEncoder e SMOTE foram inseridas dentro de imblearn.pipeline.Pipeline, sendo ajustadas APENAS com os dados de treino de cada um dos 10 folds.">
+      <div class="slide-header">
+        <div class="slide-tag">Etapa 2: Rigor Experimental</div>
+        <h2 class="slide-title">Pipeline Livre de Vazamento (No Leakage)</h2>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>🛡️ Arquitetura do Pipeline</h3>
+          <ul>
+            <li><strong>Isolamento Total:</strong> Nenhuma média, desvio padrão ou frequência categórica vaza do conjunto de treino para o teste.</li>
+            <li><strong>Tratamento de Numéricos:</strong>
+              <br>• <code class="highlight">log1p + StandardScaler</code> em ganhos/perdas de capital.
+              <br>• <code class="highlight">StandardScaler</code> em idade, escolaridade e horas/semana.
+              <br>• <strong>Descarte de <em>fnlwgt</em>:</strong> Peso amostral do censo que injeta ruído.
+            </li>
+            <li><strong>Tratamento de Categóricos:</strong>
+              <br>• <code class="highlight">OneHotEncoder</code> com agrupamento de categorias raras (< 100 ocorrências).
+              <br>• Imputação explícita de faltantes como categoria <code class="highlight">"Unknown"</code>.
+            </li>
+            <li><strong>Validação:</strong> Estratificada de 10 Folds com semente fixa (42).</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>🔬 Por que a literatura elogia esta abordagem?</h3>
+          <p style="line-height: 1.6; color: #cbd5e1; margin-bottom: 12px;">
+            Muitos estudos aplicam escalonamento ou reamostragem antes do split de validação cruzada, o que superestima artificialmente a acurácia.
+          </p>
+          <div style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--accent); padding: 14px; border-radius: 4px;">
+            <strong style="color: var(--accent);">Garantia do Projeto:</strong> Toda reamostragem (SMOTE / Undersampling) opera exclusivamente no fold de treino. O fold de teste preserva 100% da distribuição original do mundo real.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Benchmark de Algoritmos -->
+    <div class="slide" data-notes="Apresente os 4 algoritmos e as 3 configurações. O Random Forest com 200 árvores foi o melhor em F1 (0.6829) e ROC-AUC (0.9201). O Naive Bayes teve recall alto (0.8695), mas baixa precisão (0.4869).">
+      <div class="slide-header">
+        <div class="slide-tag">Etapa 3: Comparativo</div>
+        <h2 class="slide-title">Benchmark dos 4 Algoritmos (10-Fold CV)</h2>
+      </div>
+      <div class="grid-2">
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Algoritmo</th>
+                <th>Configuração</th>
+                <th>Acurácia</th>
+                <th>F1-Score</th>
+                <th>ROC-AUC</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="background: rgba(16, 185, 129, 0.15); font-weight: 700;">
+                <td>🌲 Random Forest</td>
+                <td>200 árv, d=20, leaf>=2</td>
+                <td>86,65%</td>
+                <td>0.6829</td>
+                <td>0.9201</td>
+              </tr>
+              <tr>
+                <td>🌲 Random Forest</td>
+                <td>100 árv, d=None, leaf>=5</td>
+                <td>86,51%</td>
+                <td>0.6822</td>
+                <td>0.9192</td>
+              </tr>
+              <tr>
+                <td>🌿 Árvore Decisão</td>
+                <td>entropy, leaf>=20</td>
+                <td>85,90%</td>
+                <td>0.6747</td>
+                <td>0.9025</td>
+              </tr>
+              <tr>
+                <td>🌿 Árvore Decisão</td>
+                <td>gini, depth=10</td>
+                <td>86,07%</td>
+                <td>0.6685</td>
+                <td>0.9028</td>
+              </tr>
+              <tr>
+                <td>📍 KNN</td>
+                <td>k = 31</td>
+                <td>84,85%</td>
+                <td>0.6658</td>
+                <td>0.9003</td>
+              </tr>
+              <tr>
+                <td>📍 KNN</td>
+                <td>k = 15</td>
+                <td>84,47%</td>
+                <td>0.6583</td>
+                <td>0.8935</td>
+              </tr>
+              <tr>
+                <td>🎲 Naive Bayes</td>
+                <td>var_smoothing=1e-1</td>
+                <td>74,93%</td>
+                <td>0.6242</td>
+                <td>0.8810</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="img-box">
+          <img src="figures/fig3_melhores_metricas.png" alt="Melhores Métricas">
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Matrizes de Confusão e Boxplot -->
+    <div class="slide" data-notes="Mostre como os modelos erram. O Naive Bayes erra muito prevendo >50K para quem não é (10.707 falsos positivos). Já o Random Forest é o mais conservador e assertivo, com apenas 1.842 falsos positivos.">
+      <div class="slide-header">
+        <div class="slide-tag">Etapa 4: Análise de Erros</div>
+        <h2 class="slide-title">Matrizes de Confusão Acumuladas</h2>
+      </div>
+      <div class="grid-2">
+        <div class="img-box">
+          <img src="figures/fig4_matrizes_confusao.png" alt="Matrizes de Confusão">
+        </div>
+        <div class="img-box">
+          <img src="figures/fig5_boxplot_f1.png" alt="Boxplot F1 Folds">
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Testes Estatísticos (Wilcoxon) -->
+    <div class="slide" data-notes="Ponto alto da apresentação: demonstre que a vitória do Random Forest não foi sorte ou variação aleatória. O teste de Wilcoxon com p-valor 0.00195 prova significância estatística em 10 de 10 folds contra KNN e Naive Bayes.">
+      <div class="slide-header">
+        <div class="slide-tag">Etapa 5: Validação Estatística</div>
+        <h2 class="slide-title">Teste Não-Paramétrico de Wilcoxon</h2>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>📋 Hipóteses Formais</h3>
+          <ul>
+            <li><strong>H₀ (Nula):</strong> Não há diferença de desempenho entre os modelos nos 10 folds.</li>
+            <li><strong>H₁ (Alternativa):</strong> Random Forest apresenta desempenho superior.</li>
+            <li><strong>Nível de Significância:</strong> α = 0.05.</li>
+          </ul>
+          <div style="margin-top: 20px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Comparação</th>
+                  <th>Métrica</th>
+                  <th>Vencedor</th>
+                  <th>p-valor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>RF vs KNN</td>
+                  <td>F1-Score</td>
+                  <td><strong>RF (10/10)</strong></td>
+                  <td><span class="badge badge-success">0.00195</span></td>
+                </tr>
+                <tr>
+                  <td>RF vs Naive Bayes</td>
+                  <td>F1-Score</td>
+                  <td><strong>RF (10/10)</strong></td>
+                  <td><span class="badge badge-success">0.00195</span></td>
+                </tr>
+                <tr>
+                  <td>RF vs Árvore Decisão</td>
+                  <td>F1-Score</td>
+                  <td><strong>RF (8/10)</strong></td>
+                  <td><span class="badge badge-warning">0.06445</span></td>
+                </tr>
+                <tr>
+                  <td>RF vs Árvore Decisão</td>
+                  <td>Acurácia</td>
+                  <td><strong>RF (10/10)</strong></td>
+                  <td><span class="badge badge-success">0.00195</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <h3>💡 Por que Wilcoxon e não Teste t?</h3>
+          <p style="line-height: 1.6; color: #cbd5e1; margin-bottom: 14px;">
+            O teste t de Student exige normalidade das diferenças, raramente observada em métricas de ML com 10 folds.
+          </p>
+          <p style="line-height: 1.6; color: #cbd5e1;">
+            O teste pareado de Wilcoxon é <strong>não-paramétrico baseado em postos (ranks)</strong>, sendo a recomendação metodológica internacional clássica (Demšar, 2006).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Desbalanceamento -->
+    <div class="slide" data-notes="Explique o impacto do balanceamento no negócio: se o objetivo for capturar ricos (ex: vender cartões black), o baseline deixa escapar 40% deles. Com SMOTE ou class_weight=balanced, o recall sobe para mais de 86%!">
+      <div class="slide-header">
+        <div class="slide-tag">Etapa 6: Alinhamento de Negócio</div>
+        <h2 class="slide-title">Tratamento do Desbalanceamento de Classes</h2>
+      </div>
+      <div class="grid-2">
+        <div class="img-box">
+          <img src="figures/fig6_desbalanceamento.png" alt="Desbalanceamento">
+        </div>
+        <div class="card">
+          <h3>🎯 Trade-off: Precisão vs Revocação</h3>
+          <ul>
+            <li><strong>Random Forest Baseline:</strong>
+              <br>Revocação de apenas <strong>60,02%</strong> (perde 4 em cada 10 indivíduos &gt;50K). F1 = 0.6829.
+            </li>
+            <li><strong>Com SMOTE:</strong>
+              <br>Revocação salta para <strong class="highlight">82,86%</strong> e F1 atinge o ápice de <strong class="highlight">0.6981</strong>.
+            </li>
+            <li><strong>Com <code class="highlight">class_weight='balanced'</code>:</strong>
+              <br>Revocação atinge impressionantes <strong class="highlight">86,33%</strong> sem aumento de tempo de treino!
+            </li>
+            <li><strong>Decisão Prática:</strong> Se o custo de perder um cliente de alta renda for superior ao custo de falso alarme, a ponderação de classes é a escolha vencedora.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Conclusão & Demonstração -->
+    <div class="slide" data-notes="Finalize com chave de ouro e convide a banca para ver a execução em tempo real rodando 'python demo_apresentacao.py' no terminal!">
+      <div class="hero-center">
+        <span class="slide-tag">Conclusões & Próximos Passos</span>
+        <h2 class="hero-title" style="font-size: 2.6rem;">Pipeline Validado & Pronto para Produção</h2>
+        <div style="max-width: 750px; text-align: left; background: rgba(15, 23, 42, 0.7); padding: 24px; border-radius: 12px; border: 1px solid var(--border); margin: 15px 0;">
+          <p style="margin-bottom: 12px; line-height: 1.6;">✅ <strong>Rigor Absoluto:</strong> Zero vazamento de dados com pipelines determinísticos.</p>
+          <p style="margin-bottom: 12px; line-height: 1.6;">✅ <strong>Superioridade Estatística:</strong> Random Forest validado via teste de Wilcoxon (p = 0.00195).</p>
+          <p style="line-height: 1.6;">✅ <strong>Sensibilidade Ajustável:</strong> Reamostragem / Class Weights elevam detecção de alta renda para 86%.</p>
+        </div>
+        <div>
+          <button class="btn btn-primary" style="padding: 12px 28px; font-size: 1.1rem;" onclick="alert('Abra o terminal do projeto e execute: python demo_apresentacao.py para demonstrar a inferência ao vivo em 3 segundos!')">
+            ⚡ Executar Demonstração ao Vivo: python demo_apresentacao.py
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Presenter Notes Drawer -->
+  <div id="notes-drawer">
+    <div class="notes-title">
+      <span>🎙️ Notas do Apresentador (O que falar neste slide)</span>
+      <span style="cursor: pointer;" onclick="toggleNotes()">✕ Fechar</span>
+    </div>
+    <div class="notes-text" id="notesText"></div>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const slideCounter = document.getElementById('slideCounter');
+    const progressFill = document.getElementById('progressFill');
+    const notesText = document.getElementById('notesText');
+    const notesDrawer = document.getElementById('notesDrawer') || document.getElementById('notes-drawer');
+
+    function updateSlide() {
+      slides.forEach((s, idx) => {
+        s.classList.toggle('active', idx === currentSlide);
+      });
+      slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+      progressFill.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+      const note = slides[currentSlide].getAttribute('data-notes') || 'Sem notas para este slide.';
+      notesText.textContent = note;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function toggleNotes() {
+      notesDrawer.classList.toggle('open');
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key.toLowerCase() === 'n') {
+        e.preventDefault();
+        toggleNotes();
+      } else if (e.key.toLowerCase() === 'f') {
+        toggleFullscreen();
+      }
+    });
+
+    updateSlide();
+  </script>
+</body>
+</html>
