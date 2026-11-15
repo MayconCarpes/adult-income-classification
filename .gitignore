@@ -46,3 +46,8 @@ venv.bak/
 data/
 *.data
 *.test
+
+# Microsoft Office temporary lock files
+~$*.docx
+~$*.xlsx
+
