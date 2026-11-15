@@ -3,6 +3,8 @@
 ## 📌 Sinopse do Programa
 Aplicação em Python para classificação preditiva de renda individual (`<=50K` vs `>50K`) a partir do conjunto de dados censitários **UCI Adult Census Income** (48.842 registros). O software implementa um fluxo completo e rigoroso de Machine Learning projetado para evitar vazamento de dados (*data leakage*), aplicando todas as transformações de aprendizado estritamente dentro de pipelines sob validação cruzada estratificada de 10 folds (*10-Fold Stratified Cross-Validation*).
 
+> 📖 **Para uma análise detalhada, metodologia formal, tabelas e gráficos comparativos, consulte o [Relatório Técnico Completo (RELATORIO.md)](RELATORIO.md).**
+
 ---
 
 ## 💻 Sinopse do Código e Módulos
